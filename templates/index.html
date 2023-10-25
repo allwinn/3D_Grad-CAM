@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload</title>
+    <link rel="stylesheet" href="index.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+    <div>
+        <nav class="navbar navbar-custom "  >
+            <div class="container">
+            <span class="navbar-brand mx-auto" style="color: white;">3D Grad-CAM</span>
+        
+          </nav>
+        </div>
+<br>
+        
+
+
+
+</div>
+    
+
+
+    
+<div id="container" >
+
+            
+                <div class="col-3">
+                    <div id='first' class="input-group mb-3 ">
+                            
+                        
+                            {% if not only_video %}
+                            
+                                <form id='load_model_form' action="/load_model" method="post" enctype="multipart/form-data">
+                                    <p>Select model file....</p> <input type="file" class="form-control" name="upload_model"><br>
+                                    <input class="btn btn-outline-primary" id='loadModelSubmit' type="submit" value="Upload Model"><br>
+                                </form>
+                                 {% endif %} 
+                        
+                    
+                <!-- </div>    
+    
+                <div class="col"> -->
+                     {% if model_loaded %}
+                                <p>Model File Loaded sucessfully!</p>
+                            
+                
+                                <!-- <input  class="btn btn-outline-primary" id="preprocessSubmit" type="submit" value="Preprocess video"> -->
+                            <form    id='VideoUpload' action="/load_video" method="post" enctype="multipart/form-data">
+                            <p>Select video file....</p><input type="file" class="form-control" name="video"  ><br>
+                            <input class="btn btn-outline-primary" id="uploadSubmit" type="submit" value="Upload Video"><br>
+                        </form>
+                        {% elif only_video  %}  
+                        <!-- <div class="col-6"> -->
+                                <!-- <input  class="btn btn-outline-primary" id="preprocessSubmit" type="submit" value="Preprocess video"> -->
+                            <form    id='VideoUpload' action="/load_video" method="post" enctype="multipart/form-data">
+                            <p>Select video file....</p><input type="file" class="form-control" name="video"  ><br>
+                            <input class="btn btn-outline-primary" id="uploadSubmit" type="submit" value="Upload Video">
+                        </form>
+
+                        {% endif %}            
+                    
+                    </div>
+                    </div>
+                    {% if input_video_url %}
+
+                             <div class="row">   
+                
+                                            <div class="col-md-4">
+                                                
+                                                <br><p>Uploaded Video</p>
+                                                <video class="embed-responsive embed-responsive-4by3" controls >
+
+                                                    <source class="embed-responsive-item" src="{{input_video_url}}" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                                </video><br>
+                                                <!-- <p>Filename : {{input_filename}}</p> -->
+                                                
+                                           
+                        
+                            
+                            
+
+                                
+                                    <!-- <div id="third" class="input-group mb-3 ">
+                                            <form id='load_model_form' action="/load_model" method="post" enctype="multipart/form-data">
+                                                <p>Select model file....</p> <input type="file" class="form-control" name="upload_model"><br>
+                                                <input class="btn btn-outline-primary" id='loadModelSubmit' type="submit" value="Upload Model">
+                                            </form> -->
+                                            
+                                            
+                                    {% endif %}
+                                    {% if model_loaded and input_video_url %}
+                            <form id="VideoPreprocess" action="/process" method="post" enctype="multipart/form-data">
+                            <input  class="btn btn-outline-primary" id="preprocessSubmit" type="submit" value="Preprocess video">
+                            </form>  
+                                {% endif %}
+                             </div>
+                        
+
+                                
+                        
+                        <div class="col-md-4">
+                            
+                                {% if result %}
+                                <br><br><p>Preprocessed Video</p>
+                                <video  controls >
+
+                                    <source src="{{output_video_url}}" type="video/mp4">
+                                Your browser does not support the video tag.
+                                </video>
+
+                                <p>Dimensions: {{ result }}</p>
+                                <form id='makePredictionsSubmit 'action="/make_predictions" method="post" enctype="multipart/form-data">
+                                    <input class="btn btn-outline-primary" type="submit" value="Make Predictions">
+                                </form>
+                                {% endif %}
+                        </div>
+                    </div>
+
+
+    
+   
+
+    
+
+    {% if predicted_label and actual_label %}
+    <p>The Predicted output class is {{ predicted_label }}</p>
+    <p>The Actual output class is {{ actual_label }}</p>
+    <form id='analyzePredictions' action="/get_heatmaps" method="post" enctype="multipart/form-data">
+    <input class="btn btn-outline-primary" type="submit"  value="Analyze">
+    </form>
+    {% elif predicted_label %}
+    <p>The Predicted and Actual output class is {{ predicted_label }}</p>
+    <form id='analyzePredictions' action="/get_heatmaps" method="post" enctype="multipart/form-data">
+    <input class="btn btn-outline-primary" type="submit"  value="Analyze">
+    </form>
+    
+    {% endif %}
+</div>
+</body>
+</html>
+

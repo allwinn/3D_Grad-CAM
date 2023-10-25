@@ -1,0 +1,7 @@
+0: 'Basketball'
+1: 'BoxingPunchingBag'
+2: 'GolfSwing'
+3: 'HorseRiding'
+4: 'PullUps'
+5: 'PushUps'
+6: 'Fencing'

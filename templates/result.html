@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <title>Video Processing Result</title>
+    
+    <link rel="stylesheet" href="index.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body >
+    <div>
+    <nav class="navbar navbar-custom "  >
+        <div class="container">
+        <span class="navbar-brand mx-auto" style="color: white;">3D Grad-CAM Analysis</span>
+    
+      </nav>
+    </div>
+            
+   </div>
+
+
+<div>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            
+                    <form id='getHeatmaps' action="/get_videos" method="post">
+                        <!-- <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Heatmap Images</a> -->
+                <input class="nav-link dropdown-toggle" ata-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" type="submit" value="Heatmap Videos">
+                </form>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Heatmap Images</a>
+            <div class="dropdown-menu">
+                {% if image_paths %}
+                <form action="/get_images" method="post">
+                {% for layer in layer_names %}
+                <input class="dropdown-item" type="submit" value="{{layer}}" name="layer_name" >
+                {% endfor %}
+                {% endif %}
+                
+                </form>
+           
+          
+            </div>
+        </li>
+        {% if  inference_heatmap_paths%} 
+        <li class="nav-item">
+            
+                    <form id='getInferenceHeatmaps' action="/get_inference" method="post">
+                    <input class="nav-link dropdown-toggle" ata-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" type="submit" value="Inference Heatmaps ">
+                    </form>
+        </li>
+        {% endif %}
+
+        <li class="nav-item align-right">
+            <form  action="/" method="post">
+                       
+                <input class="nav-link dropdown-toggle" ata-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" type="submit" name='without_model' value="Analyze new video">
+            </form>
+        </li>
+        <li class="nav-item align-right">
+            <form  action="/" method="post">
+                       
+                <input class="nav-link dropdown-toggle" ata-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" type="submit" name='without_model' value="Analyze new model">
+            </form>
+        </li>
+        </ul>
+
+    </div>
+
+
+
+
+    <!-- <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Heatmap Images</a>
+        <div class="dropdown-menu">
+           
+            {% for layer in layer_names %}
+    <a class='dropdown-item' href="#">{{layer}}</a>
+        {% endfor %}
+    </form>
+        </div>
+      </li> -->
+
+
+
+
+
+
+   
+
+
+<!-- 
+    <nav class="navbar navbar-expand-lg navbar-light ">
+    <form class="form-inline my-2 my-lg-0">
+      
+      <button class="btn btn-outline-primary " type="submit">HeatMap Images</button>
+      <button class="btn btn-outline-primary " type="submit">HeatMap Videos</button>
+    </form> 
+</nav>-->
+  </div>
+
+<div id="heatmapImages">
+    <div class="row">
+    {% if image_paths %}
+    {% if individual_layer_image_list %}
+    {% for path in individual_layer_image_list %}
+    <div class="col-md-2">
+    <img src="{{path}}" class="rounded">
+    <p >Frame No. {{loop.index}}</p>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endif %}
+    </div>
+</div>
+<!-- <div  id="heatmapImages">
+    {% if image_paths %}
+
+    <form action="/get_images" method="post">
+       <p> Select layer to get Analyze Heatmap Images</p>
+    {% for layer in layer_names %}
+    <input type="submit" value="{{layer}}" name="layer_name" >
+    {% endfor %}
+
+    {% if individual_layer_image_list %}
+    {% for path in individual_layer_image_list %}
+    <img src="{{path}}" >
+    {% endfor %}
+    {% endif %}
+    </form>
+    {% endif %}
+
+</div> -->
+
+ <div id="heatmapVideos"> 
+    <br>
+    <div class="row">
+    {% if animation_paths %}
+    {% if  individual_video_paths %}
+    {% for name,path in individual_video_paths.items() %} 
+    
+        <div class="col-md-3">
+    <video  controls >
+       <source src="{{path}}" class="embed-responsive embed-responsive-4by3" type="video/mp4">
+    Your browser does not support the video tag.
+    </video>
+    <p >{{name}}</p>
+    </div>
+    
+    {% endfor %}
+    {% endif %}
+    </form> 
+    {% endif %}
+    </div>
+</div>  
+
+ <div id="heatmapInferenceImages">
+    <div class="row">
+    {% if inference_heatmap_paths %}
+    {% if individual_inference_paths %}
+    {% for name,path in individual_inference_paths.items() %} 
+    {% for indiviual_path in path %}
+    <div class="col-md-2">
+    <img src="{{indiviual_path}}" class="rounded">
+    <p >{{name}} Frame No. {{loop.index}}</p>
+    </div>
+    {% endfor %}
+    {{ '\n' }}
+    {% endfor %}
+    {% endif %}
+    {% endif %}
+    </div>
+</div>     
+</body>
+</html>
