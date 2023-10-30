@@ -45,7 +45,7 @@ The heatmap images can be viewed under the **Heatmap Images** tab.
 
 
 
-For wrong predictions the inference maps can be iewd under the **Inference Heatmaps** tab.
+For wrong predictions the inference maps can be viewed under the **Inference Heatmaps** tab.
 
 
 <img width="959" alt="wrong_1_d" src="https://github.com/allwinn/3D_Grad-CAM/assets/51354802/c5bfb3c9-6332-49ca-b3c1-523db8276478">
